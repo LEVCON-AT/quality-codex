@@ -1,0 +1,36 @@
+{
+  "name": "@__SLUG__/root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Quality-Codex Cloud-Template (Vercel + Supabase Cloud)",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "docs:check": "tsx scripts/check-doc-links.ts",
+    "boot:verify": "tsx scripts/verify-claude-boot.ts",
+    "i18n:check": "tsx scripts/check-i18n.ts",
+    "audit:high": "pnpm audit --audit-level=high --prod"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "supabase": "^1.226.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.3",
+    "vercel": "^39.0.0",
+    "vitest": "^3.0.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "axios": ">=1.13.5"
+    }
+  }
+}

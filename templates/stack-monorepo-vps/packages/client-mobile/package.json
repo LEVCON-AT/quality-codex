@@ -1,0 +1,11 @@
+{
+  "name": "@__SLUG__/client-mobile",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'Run pnpm exec create-expo-app . to initialize'",
+    "typecheck": "tsc --noEmit || true",
+    "lint": "biome check . || true",
+    "test": "echo 'no tests yet'"
+  }
+}

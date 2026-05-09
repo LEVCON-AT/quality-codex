@@ -1,0 +1,41 @@
+# Supabase Stack — selbst gehostet via Docker Compose
+# Adapted from https://supabase.com/docs/guides/self-hosting/docker
+
+version: '3.8'
+
+services:
+  db:
+    image: supabase/postgres:15.6.1.146
+    container_name: __SLUG__-supabase-db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: ${SUPABASE_DB_PASSWORD}
+      POSTGRES_DB: postgres
+      JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      POSTGRES_PORT: 5432
+    volumes:
+      - ./volumes/db/data:/var/lib/postgresql/data:Z
+      - ./migrations:/docker-entrypoint-initdb.d/migrations:ro
+    ports:
+      - "127.0.0.1:5432:5432"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - SETUID
+      - SETGID
+
+  # TODO: kong, gotrue, postgrest, realtime, storage-api, studio, edge-runtime, ...
+  # Siehe https://github.com/supabase/supabase/tree/master/docker für vollständiges Setup.
+
+networks:
+  default:
+    name: __SLUG__-supabase

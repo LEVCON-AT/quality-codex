@@ -1,0 +1,106 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  pre-deploy-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Security baseline check
+        run: |
+          curl -sI https://__DOMAIN__ | grep -q "Strict-Transport-Security"
+          curl -sI https://__DOMAIN__ | grep -q "X-Frame-Options: DENY"
+
+  pentest-suite:
+    runs-on: ubuntu-latest
+    needs: pre-deploy-verify
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Run pentest suite
+        run: pnpm --filter @__SLUG__/client-web exec playwright test tests/security/
+
+  build:
+    runs-on: ubuntu-latest
+    needs: pentest-suite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+        env:
+          VITE_BASE_PATH: /
+          VITE_SUPABASE_URL: ${{ secrets.PROD_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.PROD_SUPABASE_ANON_KEY }}
+      - name: Tar artifacts
+        run: |
+          tar -czf client-web.tar.gz -C packages/client-web/dist .
+          tar -czf docs-wiki.tar.gz -C packages/docs-wiki/.vitepress/dist .
+          tar -czf bridge.tar.gz -C packages/bridge/dist .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-prod
+          path: |
+            client-web.tar.gz
+            docs-wiki.tar.gz
+            bridge.tar.gz
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production  # ⚠ requires manual approval (configured in GitHub repo settings)
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build-prod
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Snapshot pre-deploy backup
+        run: |
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            '/opt/__SLUG__/infra/scripts/backup-postgres.sh pre-deploy'
+
+      - name: Deploy
+        run: |
+          rsync -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            client-web.tar.gz docs-wiki.tar.gz bridge.tar.gz \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/tmp/
+
+          ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            'cd /opt/__SLUG__ && bash infra/scripts/deploy.sh prod'
+
+      - name: Smoketest
+        run: curl -sf https://__DOMAIN__/healthz | grep -q '"ok":true'
+
+      - name: Notify Sentry of release
+        if: success()
+        run: |
+          curl -sX POST https://sentry.io/api/0/organizations/__ORG__/releases/ \
+            -H "Authorization: Bearer ${{ secrets.SENTRY_AUTH_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"version": "${{ github.sha }}", "projects": ["__SLUG__"]}'

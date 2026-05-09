@@ -1,0 +1,34 @@
+name: DAST Scan (Nightly)
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 02:00 UTC daily
+  workflow_dispatch:
+
+jobs:
+  zap-baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.10.0
+        with:
+          target: 'https://staging.__DOMAIN__'
+          rules_file_name: '.zap/rules.tsv'
+          allow_issue_writing: false
+
+      - name: Headers grade check (securityheaders.com)
+        run: |
+          GRADE=$(curl -sI "https://securityheaders.com/?q=staging.__DOMAIN__&followRedirects=on" \
+            -o /dev/null -w '%{redirect_url}' | grep -oP 'grade=\K[A-F][+-]?')
+          echo "Grade: $GRADE"
+          [ "$GRADE" = "A+" ] || exit 1
+
+      - name: Notify on findings
+        if: failure()
+        run: |
+          gh issue create --title "DAST Scan: findings detected" \
+            --body "DAST-Scan am $(date) hat Findings entdeckt. Bitte prüfen." \
+            --label "security,dast"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

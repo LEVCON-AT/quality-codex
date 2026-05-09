@@ -1,0 +1,38 @@
+name: Deploy Staging (Vercel + Supabase Cloud)
+
+on:
+  push:
+    branches: [develop]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Migrate Supabase staging
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.STAGING_SUPABASE_PROJECT_REF }}
+        run: |
+          npx supabase link --project-ref $SUPABASE_PROJECT_REF
+          npx supabase db push
+
+      - name: Deploy to Vercel (preview)
+        run: |
+          npx vercel deploy \
+            --token=${{ secrets.VERCEL_TOKEN }} \
+            --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.STAGING_VERCEL_PROJECT_ID }}
+
+      - name: Smoketest
+        run: curl -sf https://staging.__DOMAIN__/healthz | grep -q '"ok":true'

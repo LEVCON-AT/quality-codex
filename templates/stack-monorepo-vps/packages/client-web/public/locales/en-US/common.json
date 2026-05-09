@@ -1,0 +1,18 @@
+{
+  "welcome": {
+    "title": "Welcome!",
+    "subtitle": "Your Quality-Codex project is up.",
+    "cta": "Get started",
+    "cta_clicked": "You clicked it!"
+  },
+  "errors": {
+    "auth": {
+      "invalid_credentials": "Invalid credentials",
+      "unauthorized": "Not signed in"
+    },
+    "generic": {
+      "unknown": "An unknown error occurred",
+      "offline": "You're offline — will sync when reconnected"
+    }
+  }
+}

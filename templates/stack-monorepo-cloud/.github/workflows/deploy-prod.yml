@@ -1,0 +1,40 @@
+name: Deploy Production (Vercel + Supabase Cloud)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production  # requires manual approval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Migrate Supabase prod
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.PROD_SUPABASE_PROJECT_REF }}
+        run: |
+          npx supabase link --project-ref $SUPABASE_PROJECT_REF
+          npx supabase db push
+
+      - name: Deploy to Vercel (prod)
+        run: |
+          npx vercel deploy --prod \
+            --token=${{ secrets.VERCEL_TOKEN }} \
+            --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.PROD_VERCEL_PROJECT_ID }}
+
+      - name: Smoketest
+        run: curl -sf https://__DOMAIN__/healthz | grep -q '"ok":true'

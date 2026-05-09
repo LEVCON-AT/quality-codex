@@ -1,0 +1,38 @@
+{
+  "name": "@__SLUG__/root",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Quality-Codex VPS-Template — replace __SLUG__ with project slug",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "lint:fix": "pnpm -r lint:fix",
+    "docs:check": "tsx scripts/check-doc-links.ts",
+    "docs:find": "tsx scripts/check-doc-links.ts --find",
+    "doublets:check": "bash scripts/check-doublets.sh",
+    "boot:verify": "tsx scripts/verify-claude-boot.ts",
+    "i18n:check": "tsx scripts/check-i18n.ts",
+    "audit:high": "pnpm audit --audit-level=high --prod",
+    "format": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.4"
+  },
+  "pnpm": {
+    "overrides": {
+      "axios": ">=1.13.5",
+      "fast-uri": ">=3.1.1"
+    }
+  }
+}

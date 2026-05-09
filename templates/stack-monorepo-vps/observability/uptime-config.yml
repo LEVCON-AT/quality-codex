@@ -1,0 +1,30 @@
+# Uptime-Kuma / UptimeRobot Konfiguration
+# Bei Uptime-Kuma: Monitor-Definitionen hier dokumentieren, manuell anlegen via UI
+# Bei UptimeRobot: API-basiertes Setup-Skript schreiben
+
+monitors:
+  - name: "App (prod)"
+    url: "https://__DOMAIN__/healthz"
+    interval_s: 60
+    expect_body: '"ok":true'
+
+  - name: "App (staging)"
+    url: "https://staging.__DOMAIN__/healthz"
+    interval_s: 300
+
+  - name: "Docs Wiki"
+    url: "https://docs.__DOMAIN__/"
+    interval_s: 300
+    expect_status: 200
+
+  - name: "Backup Cron Heartbeat"
+    type: "push"  # Healthchecks.io-Style
+    interval_s: 86400  # daily
+    grace_s: 3600      # warn 1h after missing
+
+alerts:
+  channels:
+    - type: "email"
+      to: "alerts@__DOMAIN__"
+    - type: "ntfy"
+      url: "https://ntfy.sh/__SLUG__-alerts"

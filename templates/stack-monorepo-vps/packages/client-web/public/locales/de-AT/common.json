@@ -1,0 +1,18 @@
+{
+  "welcome": {
+    "title": "Willkommen!",
+    "subtitle": "Dein Quality-Codex-Projekt läuft.",
+    "cta": "Loslegen",
+    "cta_clicked": "Du hast geklickt!"
+  },
+  "errors": {
+    "auth": {
+      "invalid_credentials": "Anmeldedaten ungültig",
+      "unauthorized": "Nicht angemeldet"
+    },
+    "generic": {
+      "unknown": "Ein unbekannter Fehler ist aufgetreten",
+      "offline": "Du bist offline — wird beim nächsten Online-Status synchronisiert"
+    }
+  }
+}

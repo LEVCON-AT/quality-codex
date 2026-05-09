@@ -1,0 +1,29 @@
+name: Feature Verification (Nightly)
+
+on:
+  schedule:
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  playwright-e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - name: Run E2E tests
+        run: pnpm --filter @__SLUG__/client-web exec playwright test tests/e2e/
+        env:
+          PLAYWRIGHT_BASE_URL: https://staging.__DOMAIN__
+
+      - name: Lighthouse CI
+        run: |
+          pnpm dlx @lhci/cli@0.14.x autorun \
+            --collect.url=https://staging.__DOMAIN__ \
+            --assert.preset=lighthouse:no-pwa
