@@ -1,0 +1,30 @@
+# Lefthook config — pre-commit + commit-msg hooks
+# Install: pnpm dlx lefthook install
+# https://lefthook.dev/
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: '*.{ts,tsx,js,jsx,json,css}'
+      run: pnpm exec biome check --write {staged_files} && git add {staged_files}
+    typecheck:
+      glob: '*.{ts,tsx}'
+      run: pnpm typecheck
+    doublets:
+      run: bash scripts/check-doublets.sh
+    docs:
+      glob: '*.{ts,tsx,md}'
+      run: pnpm docs:check
+
+commit-msg:
+  commands:
+    commitlint:
+      run: pnpm exec commitlint --edit {1}
+
+pre-push:
+  commands:
+    test:
+      run: pnpm test
+    boot-budget:
+      run: pnpm boot:verify

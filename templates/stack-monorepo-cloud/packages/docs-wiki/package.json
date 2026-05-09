@@ -1,0 +1,17 @@
+{
+  "name": "@__SLUG__/docs-wiki",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "typecheck": "echo 'no ts in docs'",
+    "lint": "echo 'no lint for docs-wiki'",
+    "test": "echo 'no tests for docs-wiki'"
+  },
+  "devDependencies": {
+    "vitepress": "^1.5.0"
+  }
+}

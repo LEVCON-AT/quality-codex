@@ -1,0 +1,46 @@
+{
+  "categories": {
+    "essential": {
+      "title": {
+        "de-AT": "Notwendig",
+        "en-US": "Essential"
+      },
+      "description": {
+        "de-AT": "Erforderlich für den Betrieb der Website (Session, Sicherheit). Können nicht deaktiviert werden.",
+        "en-US": "Required for website operation (session, security). Cannot be disabled."
+      },
+      "default": true,
+      "required": true,
+      "cookies": ["session", "csrf-token"]
+    },
+    "analytics": {
+      "title": {
+        "de-AT": "Statistik",
+        "en-US": "Analytics"
+      },
+      "description": {
+        "de-AT": "Hilft uns die Nutzung anonym zu verstehen (Plausible).",
+        "en-US": "Helps us understand usage anonymously (Plausible)."
+      },
+      "default": false,
+      "required": false,
+      "cookies": ["plausible"]
+    }
+  },
+  "strings": {
+    "de-AT": {
+      "banner_title": "Cookies",
+      "banner_text": "Wir nutzen Cookies. Essential-Cookies sind notwendig. Analytics ist freiwillig.",
+      "accept_all": "Alle akzeptieren",
+      "reject_all": "Nur Essential",
+      "configure": "Anpassen"
+    },
+    "en-US": {
+      "banner_title": "Cookies",
+      "banner_text": "We use cookies. Essential cookies are required. Analytics is optional.",
+      "accept_all": "Accept all",
+      "reject_all": "Essential only",
+      "configure": "Configure"
+    }
+  }
+}

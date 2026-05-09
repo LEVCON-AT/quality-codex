@@ -1,0 +1,106 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  typecheck-lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+
+      - name: Doc-Link-Check
+        run: pnpm docs:check
+
+      - name: Doublet-Check
+        run: pnpm doublets:check
+
+      - name: Boot-Budget-Check
+        run: pnpm boot:verify
+
+  migration-2pass:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: supabase/postgres:15.6.1.146
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pass 1 — Initial migration
+        run: |
+          for f in infra/supabase/migrations/*.sql; do
+            PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -f "$f"
+          done
+      - name: Pass 2 — Idempotency check
+        run: |
+          for f in infra/supabase/migrations/*.sql; do
+            PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -f "$f"
+          done
+
+  sast-semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/owasp-top-ten
+            p/typescript
+            p/javascript
+
+  sca-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high --prod
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: CycloneDX/gh-node-module-generatebom@v1
+        with:
+          path: .
+          output: sbom.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.json

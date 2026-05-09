@@ -1,0 +1,56 @@
+name: Backup Verify (Weekly)
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'  # Sundays 03:00 UTC
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: supabase/postgres:15.6.1.146
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install age
+        run: |
+          curl -L https://github.com/FiloSottile/age/releases/download/v1.2.1/age-v1.2.1-linux-amd64.tar.gz | tar -xz
+          sudo mv age/age /usr/local/bin/
+
+      - name: Download latest backup from B2
+        run: |
+          # TODO: Backblaze B2 CLI configured via secrets
+          echo "TODO: download latest backup"
+          # b2 download-file-by-name $BACKUP_BUCKET path/to/latest.sql.gz.age /tmp/latest.sql.gz.age
+
+      - name: Decrypt + Restore
+        run: |
+          echo "${{ secrets.BACKUP_AGE_PRIVATE_KEY }}" > /tmp/age-key.txt
+          # age -d -i /tmp/age-key.txt /tmp/latest.sql.gz.age | gunzip > /tmp/restore.sql
+          # PGPASSWORD=postgres psql -h localhost -U postgres -d postgres < /tmp/restore.sql
+          rm -f /tmp/age-key.txt
+          echo "TODO: actual restore"
+
+      - name: Smoke-Queries
+        run: |
+          # PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -c "SELECT count(*) FROM users"
+          # PGPASSWORD=postgres psql -h localhost -U postgres -d postgres -c "SELECT count(*) FROM tenants"
+          echo "TODO: smoke queries"
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          gh issue create --title "Backup-Verify FAILED" \
+            --body "Backup-Verify-Workflow am $(date) fehlgeschlagen. Backup-Pipeline prüfen." \
+            --label "ops,backup-failure"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
