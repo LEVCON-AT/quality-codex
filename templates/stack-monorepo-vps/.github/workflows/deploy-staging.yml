@@ -70,7 +70,7 @@ jobs:
             'cd /opt/__SLUG__-staging && bash infra/scripts/deploy.sh staging'
 
       - name: Smoketest
-        run: curl -sf https://staging.__DOMAIN__/healthz | grep -q '"ok":true'
+        run: curl -sf https://__STAGING_DOMAIN__/healthz | grep -q '"ok":true'
 
       - name: Notify
         if: failure()

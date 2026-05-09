@@ -20,10 +20,10 @@ jobs:
       - name: Run E2E tests
         run: pnpm --filter @__SLUG__/client-web exec playwright test tests/e2e/
         env:
-          PLAYWRIGHT_BASE_URL: https://staging.__DOMAIN__
+          PLAYWRIGHT_BASE_URL: https://__STAGING_DOMAIN__
 
       - name: Lighthouse CI
         run: |
           pnpm dlx @lhci/cli@0.14.x autorun \
-            --collect.url=https://staging.__DOMAIN__ \
+            --collect.url=https://__STAGING_DOMAIN__ \
             --assert.preset=lighthouse:no-pwa

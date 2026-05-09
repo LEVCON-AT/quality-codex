@@ -4,7 +4,7 @@ set -e
 
 ENV=${1:-staging}
 case $ENV in
-  staging) DOMAIN="staging.__DOMAIN__" ;;
+  staging) DOMAIN="__STAGING_DOMAIN__" ;;
   prod) DOMAIN="__DOMAIN__" ;;
   *) echo "Unknown env: $ENV"; exit 1 ;;
 esac

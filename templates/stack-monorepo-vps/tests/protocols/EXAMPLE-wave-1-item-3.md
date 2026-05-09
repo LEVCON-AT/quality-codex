@@ -18,7 +18,7 @@
 ## Ist (Auto-Capture, Modus A)
 
 ```
-GET https://staging.__DOMAIN__/healthz
+GET https://__STAGING_DOMAIN__/healthz
 < HTTP/1.1 200 OK
 < Content-Type: application/json
 < Strict-Transport-Security: max-age=63072000; includeSubDomains; preload

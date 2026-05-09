@@ -1,8 +1,18 @@
 # Start-Codex-Project Prompts
 
 Kopierfertige Prompts für neue Claude-Code-Sessions, um den Quality-Coding-Codex
-(`C:\node\quality-codex`, GitHub: https://github.com/LEVCON-AT/quality-codex) zu laden
-und ein neues Projekt damit zu onboarden.
+(GitHub: https://github.com/LEVCON-AT/quality-codex) zu laden und ein neues
+Projekt damit zu onboarden.
+
+## Wenn der Codex NOCH NICHT lokal ist
+
+Erst klonen (einmalig pro Maschine):
+```powershell
+git clone https://github.com/LEVCON-AT/quality-codex.git <DEIN-CODEX-PFAD>
+# z.B. C:\node\quality-codex (Linux/macOS: ~/code/quality-codex)
+```
+
+Dann mit Prompt B unten weiter (klont automatisch wenn nötig).
 
 > **Pflege-Hinweis:** Diese Datei lebt im Codex-Repo und wird mit `git pull`
 > aktualisiert. Wenn du sie als lokales Snippet unter

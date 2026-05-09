@@ -35,4 +35,4 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.STAGING_VERCEL_PROJECT_ID }}
 
       - name: Smoketest
-        run: curl -sf https://staging.__DOMAIN__/healthz | grep -q '"ok":true'
+        run: curl -sf https://__STAGING_DOMAIN__/healthz | grep -q '"ok":true'

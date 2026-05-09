@@ -39,10 +39,9 @@ export const CookieConsent: Component = () => {
 
   return (
     <Show when={show()}>
-      <div
-        role="dialog"
+      <section
+        role="region"
         aria-labelledby="cookie-banner-title"
-        aria-describedby="cookie-banner-text"
         class="fixed bottom-0 left-0 right-0 z-[var(--z-notification)] bg-white shadow-lg border-t p-6"
       >
         <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-start md:items-center gap-4">
@@ -63,7 +62,7 @@ export const CookieConsent: Component = () => {
             </Button>
           </div>
         </div>
-      </div>
+      </section>
     </Show>
   );
 };

@@ -13,13 +13,13 @@ jobs:
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.10.0
         with:
-          target: 'https://staging.__DOMAIN__'
+          target: 'https://__STAGING_DOMAIN__'
           rules_file_name: '.zap/rules.tsv'
           allow_issue_writing: false
 
       - name: Headers grade check (securityheaders.com)
         run: |
-          GRADE=$(curl -sI "https://securityheaders.com/?q=staging.__DOMAIN__&followRedirects=on" \
+          GRADE=$(curl -sI "https://securityheaders.com/?q=__STAGING_DOMAIN__&followRedirects=on" \
             -o /dev/null -w '%{redirect_url}' | grep -oP 'grade=\K[A-F][+-]?')
           echo "Grade: $GRADE"
           [ "$GRADE" = "A+" ] || exit 1

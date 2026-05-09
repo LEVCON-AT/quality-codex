@@ -1,7 +1,6 @@
-# Claude Quality-Coding-Codex für SaaS-App Erstellung
+# Quality-Coding-Codex
 
-Wiederverwendbares Framework für Production-Grade-Software-Engineering — abgeleitet aus einem Projekt.
-Hinweise: Dieses Setup (ausgeführt in Claude) verbraucht ~ 50k Token.
+Wiederverwendbares Framework für Production-Grade-Software-Engineering — abgeleitet aus dem Matrix-Projekt.
 
 ## Was ist das
 
@@ -105,9 +104,9 @@ Codex selbst folgt SemVer. Aktuelle Version in [.codex-version](.codex-version),
 
 ## Was NICHT enthalten ist
 
-- **Yjs/CRDT-Collab** — kommt in v1.1 wenn abhängiges Projekt das Pattern stabilisiert hat
-- **ESLint** — weggelassen, Biome ersetzt es vollständig
+- **Yjs/CRDT-Collab** — kommt in v1.1 wenn Matrix das Pattern stabilisiert hat
+- **ESLint** — bewusst weggelassen, Biome ersetzt es vollständig
 
 ## Quelle
 
-Abgeleitet aus den Patterns des Matrix-Projekts / Private-Repository
+Abgeleitet aus den Patterns des Matrix-Projekts (`C:\node\Matrix`). Matrix bleibt unangetastet die Referenz-Implementierung.

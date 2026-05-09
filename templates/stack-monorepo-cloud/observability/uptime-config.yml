@@ -9,7 +9,7 @@ monitors:
     expect_body: '"ok":true'
 
   - name: "App (staging)"
-    url: "https://staging.__DOMAIN__/healthz"
+    url: "https://__STAGING_DOMAIN__/healthz"
     interval_s: 300
 
   - name: "Docs Wiki"

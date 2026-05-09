@@ -79,6 +79,42 @@ Wenn Linter etwas flaggt → **refactor**, niemals suppress. Ausnahme: dokumenti
 - **Feature-Folder-Pattern:** `lib/alias-*.ts` für 10 Files zur gleichen Domain (statt `alias/` mit `index.ts`-Re-Exports — flacher ist besser)
 - **Singleton-Helper:** große, domain-übergreifende Files (`queries.ts`, `mutations.ts`) — bewusst groß, nicht künstlich aufgeteilt
 
+## Umlaute-Konvention (Deutsche Inhalte)
+
+Bei deutschen Texten in **Code, Kommentaren, Doku, Locale-Files und Commits**:
+
+- ✅ **Pflicht:** ä, ö, ü, ß, € — UTF-8-Original verwenden
+- ❌ **Verboten:** ae/oe/ue, ss-Ersatz, EUR statt €
+
+```typescript
+// ✓ richtig
+const msg = 'Übersicht öffnen';
+const total = 'Gesamtbetrag: 99,90 €';
+
+// ❌ falsch
+const msg = 'Uebersicht oeffnen';
+const total = 'Gesamtbetrag: 99,90 EUR';
+```
+
+**Begründung:** Lesbarkeit, Konsistenz mit gedruckter Sprache, korrekte Sortierung (`Über` ≠ `Ueber` in Locale-aware-Sortierung).
+
+**Voraussetzung:** Files MÜSSEN als UTF-8 (BOM-less) gespeichert sein. Alle Editoren des Codex-Stacks (VSCode, JetBrains) machen das default. PowerShell-Skripte (`bootstrap.ps1` etc.) nutzen `[System.Text.UTF8Encoding]::new($false)` statt `Set-Content` (das schreibt sonst Windows-CP1252 → Mojibake).
+
+Lint-Check: `scripts/check-encoding.ps1` (TODO v1.1) scannt nach Mojibake-Sequenzen (`Ã¤`, `Ã¶`, `Ã¼`, `â‚¬`) — sofort fix.
+
+## Workspace-Hygiene (pnpm Monorepo)
+
+- **Workspace-spezifische Deps:** `pnpm add -F <workspace> <pkg>` — niemals `pnpm add <pkg>` im Root für Workspace-Code
+- **Root `package.json` enthält NUR:** Build-Tools (Biome, TypeScript, vitest, tsx) + Workspace-Coordinators (Scripts via `pnpm -r ...`)
+- **Peer-Dependencies-Falle:** Manche Tools (z.B. **VitePress** → `vue` als peer-dep) können bei Auto-Install im Root landen wenn falsch gemounted. Wenn `vue` im Root-`package.json` auftaucht: das ist ein **Bug**, gehört in den `docs-wiki`-Workspace.
+  ```powershell
+  # Root säubern
+  pnpm remove vue   # entfernt aus root/package.json
+  # Korrekt installieren (falls überhaupt nötig — VitePress zieht es eh transitiv)
+  pnpm add -F docs-wiki vue
+  ```
+- **Pre-Commit-Check** (TODO v1.1): Skript verbietet bestimmte deps im Root (`vue`, `react`, `solid-js`) — gehören in Workspaces
+
 ## Strict-Mode-Defaults (tsconfig)
 
 ```json
