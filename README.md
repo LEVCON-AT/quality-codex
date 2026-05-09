@@ -1,6 +1,7 @@
 # Claude Quality-Coding-Codex für SaaS-App Erstellung
 
 Wiederverwendbares Framework für Production-Grade-Software-Engineering — abgeleitet aus einem Projekt.
+Dieses Setup (ausgeführt in Claude) verbraucht ~ 50k Token.
 
 ## Was ist das
 
