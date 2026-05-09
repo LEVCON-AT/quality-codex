@@ -8,12 +8,43 @@ Ein klonbarer Template-Repo + Claude-Code-Skill, der ein neues Projekt in <10 Mi
 
 ## Schneller Einstieg
 
+### Erstmals: Codex klonen
+
 ```powershell
-# In Claude Code:
-/onboard-project
+git clone https://github.com/LEVCON-AT/quality-codex.git C:\node\quality-codex
 ```
 
-Der Skill fragt: Projekt-Name, Stack, Tenancy, Mobile, Locales, Infra-Variante, Domain, Backup-Target. Kopiert das passende Template, initialisiert Git, setzt Secrets, deployed Initial-Stack.
+Spätere Updates: `cd C:\node\quality-codex; git pull`
+
+### Neues Projekt onboarden
+
+In einer **neuen Claude-Code-Session** diesen Prompt einfügen:
+
+```
+Lies C:\node\quality-codex\START-HERE.md und folge Prompt A.
+
+Discovery-Antworten:
+- Projekt-Name: <Acme Tools>
+- Slug: <acme-tools>
+- Stack: Full-Stack-Monorepo
+- Mobile: nein
+- MCP: nein
+- Tenancy: Single-Tenant
+- Locales: de-AT, en-US (RTL: nein)
+- Infra: VPS
+- Domain: <tools.acme.com>
+- GitHub-Org: <LEVCON-AT>
+- Backup: später
+- Observability: später
+
+Bootstrap-Ziel: C:\node\<slug>
+```
+
+Werte in `<...>` ersetzen, dann läuft Claude die Phasen 0-8 durch:
+Codex pullen → Template kopieren → Platzhalter ersetzen → git init →
+Secrets-Setup-Anleitung → Verify (typecheck/lint/test/build).
+
+Vollständiger Workflow + Varianten in [START-HERE.md](START-HERE.md).
 
 ## Inhalte
 

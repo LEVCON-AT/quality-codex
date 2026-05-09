@@ -84,3 +84,17 @@ try {
 } finally {
     Pop-Location
 }
+
+# Archive local snippet copy — Quelle ist jetzt im Codex-Repo (START-HERE.md),
+# damit die Snippet-Datei nicht in jeder Claude-Session mitgelesen wird.
+$snippetPath = Join-Path $env:USERPROFILE ".claude\snippets\start-codex-project.md"
+if (Test-Path $snippetPath) {
+    $archiveDir = Join-Path $env:USERPROFILE ".claude\snippets\_archive"
+    New-Item -ItemType Directory -Force -Path $archiveDir | Out-Null
+    $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
+    $archivedName = "start-codex-project-archived-$stamp.md"
+    $archivedPath = Join-Path $archiveDir $archivedName
+    Move-Item -Path $snippetPath -Destination $archivedPath -Force
+    Write-Host "▶ Snippet archived → $archivedPath"
+    Write-Host "  Quelle bleibt im Codex-Repo: $CodexRoot\START-HERE.md"
+}
