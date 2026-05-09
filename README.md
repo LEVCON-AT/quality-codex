@@ -1,4 +1,4 @@
-# Quality-Coding-Codex
+# Claude Quality-Coding-Codex für SaaS-App Erstellung
 
 Wiederverwendbares Framework für Production-Grade-Software-Engineering — abgeleitet aus dem Matrix-Projekt.
 
