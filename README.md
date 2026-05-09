@@ -1,6 +1,6 @@
 # Claude Quality-Coding-Codex für SaaS-App Erstellung
 
-Wiederverwendbares Framework für Production-Grade-Software-Engineering — abgeleitet aus dem Matrix-Projekt.
+Wiederverwendbares Framework für Production-Grade-Software-Engineering — abgeleitet aus einem Projekt.
 
 ## Was ist das
 
