@@ -97,9 +97,9 @@ Codex selbst folgt SemVer. Aktuelle Version in [.codex-version](.codex-version),
 
 ## Was NICHT enthalten ist
 
-- **Yjs/CRDT-Collab** — kommt in v1.1 wenn Matrix das Pattern stabilisiert hat
-- **ESLint** — bewusst weggelassen, Biome ersetzt es vollständig
+- **Yjs/CRDT-Collab** — kommt in v1.1 wenn abhängiges Projekt das Pattern stabilisiert hat
+- **ESLint** — weggelassen, Biome ersetzt es vollständig
 
 ## Quelle
 
-Abgeleitet aus den Patterns des Matrix-Projekts (`C:\node\Matrix`). Matrix bleibt unangetastet die Referenz-Implementierung.
+Abgeleitet aus den Patterns des Matrix-Projekts / Private-Repository
