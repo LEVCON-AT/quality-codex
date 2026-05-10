@@ -2,6 +2,28 @@
 
 Dieses Dokument ist Pflicht-Lektüre bei jedem Session-Start. Hard-Cap: **≤ 2.000 Tokens**. Reine Stichpunkte, keine Prosa. Detail-Reasoning steht in den Tier-2/3-Docs (verlinkt am Ende).
 
+## Modus-Frage am Session-Start (PFLICHT)
+
+Vor erster Tool-Action bei nicht-trivialen Aufträgen den User klassifizieren lassen:
+
+```
+Modus-Frage:
+- Klassifizierung: [klein / mittel / groß / strategisch]
+- Empfehlung: [klassisch / sophisticated]
+- Begründung: [warum — z.B. "berührt > 3 Komponenten", "neues Pattern", "Wave-Plan", "strategisches User-Signal", "Aufwand > 1 Tag"]
+
+Soll diese Aufgabe klassisch oder sophisticated abgehandelt werden?
+```
+
+**User-Antworten:**
+- `klassisch` → direkt umsetzen mit Foundation-Bewusstsein (Tier-1 reicht)
+- `sophisticated` → `docs/claude/17-sophisticated-workflow.md` lesen, 12-Phasen-Lifecycle starten
+- `du entscheidest` → Empfehlung folgen, Begründung dokumentieren
+
+**Modus-Frage entfällt** bei: trivial-Anfragen ("mach kurz", einzeiliger Fix), Status-Fragen, klare Bugfixes mit Reproduktions-Pfad. Empfehlung dann implizit `klassisch`.
+
+**Sophisticated wenn:** > 3 Komponenten betroffen, neues Pattern wird etabliert, Foundation-relevante Direktive, Aufwand > 1 Tag, strategisches User-Signal ("eigentlich denke ich größer"), Schema-Migration mit Breaking-Change, Tooling-Wechsel.
+
 ## Kern-Regeln (immer aktiv)
 
 | # | Regel | Erkennen über | Reagieren |
@@ -73,6 +95,8 @@ OWASP ASVS L2 · OWASP Top 10 · CWE Top 25 · WCAG 2.2 AA · GDPR · SemVer 2.0
 
 ## Verlinkte Tier-2/3-Docs
 
-01-architecture · 02-code-quality · 03-design · 04-animations · 05-workflow · 06-security · 07-globalization · 08-roles-permissions · 09-data-protection · 10-performance · 11-continuous-quality · 12-feature-verification · 13-documentation · 14-mobile · 15-multi-tenancy · 16-mcp-integration
+01-architecture · 02-code-quality · 03-design · 04-animations · 05-workflow · 06-security · 07-globalization · 08-roles-permissions · 09-data-protection · 10-performance · 11-continuous-quality · 12-feature-verification · 13-documentation · 14-mobile · 15-multi-tenancy · 16-mcp-integration · **17-sophisticated-workflow** (nur bei Modus=sophisticated)
 
 References (on-demand): frontend-design · hyperui-component-index · supabase-patterns · postgres-best-practices · claude-api-patterns · code-review-method · security-review-method
+
+Planning-Templates (für Sophisticated-Modus): `docs/planning/{concept-template, sophisticated-worksheet-template.md/.csv, plan-tracker-template, schema-quad-coverage-template.csv, risk-register-template, threat-model-template, performance-budget-template, definition-of-ready, spike-template}`

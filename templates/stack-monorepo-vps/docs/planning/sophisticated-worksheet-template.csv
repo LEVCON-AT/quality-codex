@@ -1,0 +1,10 @@
+#,Sektion,Item,Form,Annahme-oder-Frage,Status,Kommentar
+§1.1,§1 Architektur,Aggregate-Root-Entscheidung,Annahme,"`tasks` ist Layer-0-Aggregate-Root, manifestations als Views",offen,
+§1.2,§1 Architektur,Tenant-ID-Pflicht,Annahme,"jede Tabelle hat tenant_id NOT NULL (außer tenants)",offen,
+§1.3,§1 Architektur,RLS-Policy-Granularität,Frage,"pro-Tenant + pro-Role oder nur pro-Tenant?",offen,
+§1.4,§1 Architektur,Schema-Versionierung,Frage,"schema_version enum auf manifestations oder global?",offen,
+§2.1,§2 Security,Auth-Provider,Frage,"Supabase-Auth allein, oder OAuth-Federation?",offen,
+§2.2,§2 Security,MFA-Pflicht,Frage,"für owner/admin sofort oder Phase 2?",offen,
+§2.3,§2 Security,Audit-Log-Retention,Annahme,"90d default, anonymisierter Restbestand 365d",offen,
+AC-1,Adjacent-Cleanup,formatDate Doublette,Drift,"3× im Repo, Sub-Sprint lib-Konsolidierung",offen,
+AC-2,Adjacent-Cleanup,RLS legacy_logs,Drift,"RLS fehlt, Sub-Sprint RLS-Sweep",offen,

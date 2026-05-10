@@ -1,0 +1,5 @@
+Tabelle,Schema,Mutations,MCP-Tools,Export-Import,Offline-Cache,Realtime-Subscribe,Channel-Bridge
+tasks,000_init.sql,mutations/tasks.ts,tools/{create_task,update_task,delete_task,list_tasks},export/tasks.json + import/tasks.ts,TABLES.tasks + DB_VERSION 3,channel:tasks-${tenantId},N/A
+audit_events,000_init.sql + 001_immutable.sql,middleware/auditLog.ts,tools/audit_query (read-only),export/audit.json,N/A (nicht offline-cacheable),N/A,N/A
+workspace_members,000_init.sql,mutations/members.ts,tools/{invite,remove_member,change_role},export/members.json,TABLES.workspace_members + DB_VERSION 3,channel:members-${tenantId},N/A
+tenants,000_init.sql,mutations/tenants.ts,tools/manage_tenant (admin only),export/tenant.json,N/A (Tenant-Identität nicht im Cache),N/A,N/A

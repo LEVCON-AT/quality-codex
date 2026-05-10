@@ -9,6 +9,25 @@ Lies diese 2 Dateien VOR der ersten Antwort, in genau dieser Reihenfolge:
 
 Außerdem ist `MEMORY.md` automatisch geladen.
 
+## Modus-Frage (Pflicht bei nicht-trivialen Aufträgen)
+
+VOR erster Tool-Action: User klassifizieren lassen.
+
+```
+Modus-Frage:
+- Klassifizierung: [klein / mittel / groß / strategisch]
+- Empfehlung: [klassisch / sophisticated]
+- Begründung: [warum]
+
+Soll diese Aufgabe klassisch oder sophisticated abgehandelt werden?
+```
+
+- **klassisch** → direkt umsetzen mit Foundation-Bewusstsein
+- **sophisticated** → `docs/claude/17-sophisticated-workflow.md` lesen, 12-Phasen-Lifecycle (Konzept-File + Worksheet MD/CSV + Plan-Tracker + Schema-Quad-Coverage)
+- **du entscheidest** → Empfehlung folgen mit Begründung dokumentiert
+
+Modus-Frage entfällt bei: Bugfix mit Reproduktions-Pfad, UI-Tweak, Status-Anfrage, einzeiliger Fix, expliziten "mach kurz".
+
 ## Tier-2 — On-Demand laden je nach Task
 
 Bei diesen Edit-Patterns lade vorher die genannten Docs:
@@ -27,6 +46,7 @@ Bei diesen Edit-Patterns lade vorher die genannten Docs:
 | Multi-Tenant-Schema-Änderung | `docs/claude/15-multi-tenancy.md` |
 | MCP-Tool (`packages/bridge/src/tools/`) | `docs/claude/16-mcp-integration.md` |
 | Doku (`docs-user/`) | `docs/claude/13-documentation.md` + `checklists/doc-update-review.md` |
+| **Sophisticated-Modus aktiv** | `docs/claude/17-sophisticated-workflow.md` + `docs/planning/{concept-template, sophisticated-worksheet-template.md/.csv, plan-tracker-template, schema-quad-coverage-template.csv}` |
 
 ## Tier-3 — Cold-Read (nur explizit angefordert)
 
