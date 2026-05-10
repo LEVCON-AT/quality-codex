@@ -52,6 +52,21 @@ Patterns abgeleitet aus dem Matrix-Projekt nach 2 Jahren produktiver Nutzung.
 - `docs/runbooks/github-setup.md` (PAT/SSH/Branch-Protection/Secrets)
 - `START-HERE.md` als Single-Source-of-Truth + Auto-Archivierung der Snippet-Kopie
 
+## [1.1.1] — 2026-05-10
+
+### Behoben — Worksheet-Format User-Story-tauglich
+- `docs/planning/sophisticated-worksheet-template.md` + `.csv`: 8 Spalten statt 6 (`# / Sektion / Item / Beschreibung / Frage / Optionen mit Trade-offs / Status / Kommentar`)
+  - **Beschreibung:** 2-3 Sätze in Alltagssprache (was, warum, Einfluss) — kein technisches Kürzel mehr
+  - **Frage:** EINE konkrete entscheidbare Frage statt "X klären"
+  - **Optionen mit Trade-offs:** 2-3 Wahlmöglichkeiten je mit Vor/Nachteil + Empfehlung
+  - **Anti-Pattern dokumentiert:** technische Kürzel ohne Beschreibung → User schreibt überall "müssen wir besprechen"
+- `docs/claude/17-sophisticated-workflow.md` Phase 5 reflektiert neues Format mit Pflicht-Format-Block + Anti-Pattern-Hinweis
+- Templates `stack-monorepo-vps` + `stack-monorepo-cloud` synchron aktualisiert
+- `.codex-version` → 1.1.1
+
+### Grund
+User-Feedback nach erstem Sophisticated-Sprint: knappe technische Beschreibungen führten zu Antworten "müssen wir besprechen" überall. User-Story-artige Formulierung mit Beschreibung + konkreter Frage + Trade-offs ermöglicht Excel-Offline-Arbeit ohne Tech-Vorbildung.
+
 ## [Unreleased]
 
 ### Geplant für v1.2

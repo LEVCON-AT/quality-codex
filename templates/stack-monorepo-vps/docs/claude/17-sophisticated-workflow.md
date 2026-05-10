@@ -65,8 +65,16 @@ Pro neuer Foundation-Direktive: Konsequenzen pro Domain / Tabelle / Komponente.
 **Drei Begleit-Files:**
 
 1. **Konzept-Hauptfile** (`docs/concepts/<thema>-foundation.md`): 15-20 Sektionen mit stabilen Anker-IDs.
-2. **Worksheet MD** (`docs/concepts/<thema>-review.md`): Tabellen-File pro Sektion mit Spalten `# / Item / Form / Annahme-oder-Frage / Status / Kommentar`.
+2. **Worksheet MD** (`docs/concepts/<thema>-review.md`): Tabellen-File pro Sektion mit 8 Spalten: `# / Sektion / Item / Beschreibung / Frage / Optionen mit Trade-offs / Status / Kommentar`.
 3. **Worksheet CSV** (`docs/concepts/<thema>-review.csv`): identisches Format, **Excel-import-tauglich**.
+
+**Pflicht-Format pro Worksheet-Punkt** (User-Story-artig, nicht technisch-knapp):
+
+- **Beschreibung:** 2-3 Sätze in Alltagssprache — was bedeutet der Punkt, warum ist er relevant, worauf hat er Einfluss?
+- **Frage:** EINE konkrete Frage, die der User beantworten kann (nicht "RLS-Granularität klären" sondern "Sollen alle Workspace-Mitglieder alle Daten sehen, oder nach Rolle eingeschränkt?")
+- **Optionen mit Trade-offs:** 2-3 Wahlmöglichkeiten je mit Vor/Nachteil + Empfehlung. Format: `A) X — Vor: ... | Nachteil: ... | B) Y — Vor: ... | Nachteil: ... | Empfehlung: A weil ...`
+
+**Anti-Pattern (User schreibt überall "müssen wir besprechen"):** technische Kürzel ohne Beschreibung in der Frage-Spalte. Wenn User ohne Tech-Vorbildung den Punkt nicht entscheiden kann, ist die Beschreibung zu knapp.
 
 User kommentiert in Status (`offen` / `bestätigt` / `geändert` / `verworfen` / `vorschlag-claude`) + Kommentar-Spalte. **MD und CSV bleiben synchron.**
 
